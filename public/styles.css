@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("/images/background.jpg"); /* Replace 'background.jpg' with your image file */
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center the links horizontally */
+}
+
+nav ul li {
+    margin-right: 150px; /* Adjust spacing between links */
+}
+
+nav ul li a {
+    color: navajowhite;
+    text-decoration: none;
+    padding: 10px 20px; /* Add padding to make the links clickable */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Darken the background on hover */
+}
+
+/* Define animation for flashing text */
+@keyframes flash {
+    0% { color: white; }
+    49% { color: white; }
+    50% { color: yellow; }
+    100% { color: yellow; }
+}
+
+/* Apply animation to the welcome line */
+.flash-text {
+    animation: flash 1s infinite;
+    text-align: center; /* Center the text */
+    font-size: 70px; /* Increase the font size */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.content {
+    background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white background */
+    padding: 20px; /* Add padding for better readability */
+    border-radius: 10px; /* Add rounded corners */
+    margin: 20px auto; /* Center the box horizontally */
+    max-width: 500px; /* Limit the width of the box */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content vertically */
+}
+
+.welcome-paragraph {
+    color: white; /* Set text color */
+    font-size: 18px; /* Set font size */
+    line-height: 1.5; /* Set line height for better readability */
+    text-align: center; /* Center the text */
+}
+
+.highlight {
+    font-weight: bold; /* Make highlighted text bold */
+    color: greenyellow; /* Set color for highlighted text */
+    font-style: italic;
+    font-size: 40;
+}
+
+/* Center the search button container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Style the search prompt */
+.search-prompt {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px; /* Adjust top margin */
+    color: #333;
+}
+
+.search-prompt span {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+}
+
+.search-prompt p {
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* Center the search container vertically and horizontally */
+.search-container {
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    border-radius: 10px; /* Add rounded corners */
+    padding: 20px; /* Add padding */
+    margin: auto; /* Center the container horizontally */
+    max-width: 500px; /* Limit the width of the container */
+    text-align: center; /* Center the content horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Center the search box vertically and horizontally */
+.search-box {
+    margin-bottom: 20px; /* Add bottom margin for spacing */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style for dropdowns inside the search box */
+.search-box select {
+    padding: 10px; /* Add padding */
+    font-size: 16px; /* Adjust font size */
+    border-radius: 5px; /* Add rounded corners */
+    border: 2px solid #ddd; /* Add a border */
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+    margin-bottom: 10px; /* Add margin bottom */
+    width: 200px; /* Set width */
+}
+
+/* Style for the submit button inside the search box */
+.search-box button {
+    padding: 10px 20px; /* Add padding */
+    font-size: 16px; /* Adjust font size */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add rounded corners */
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    cursor: pointer; /* Add pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+    width: 200px; /* Set width */
+}
+
+/* Hover effect for the submit button inside the search box */
+.search-box button:hover {
+    background-color: #45a049; /* Darker green background color on hover */
+}
+
+/* Hide close button in modal */
+.modal .close {
+    display: none;
+}
+
+/* Hide search container in modal */
+.modal .search-container {
+    display: none;
+}

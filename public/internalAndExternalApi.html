@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Data</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Country Data</h1>
+    <div class="content">
+        <div id="countryData"></div>
+        <div class="container">
+            <div class="search-prompt">
+                <span>Explore Data</span>
+                <p>Choose a country and a year to see its predicted population and holidays.</p>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <select id="countryDropdown">
+                        <option value="" selected disabled>Select Country</option>
+                    </select>
+                    <select id="yearDropdown">
+                        <option value="" selected disabled>Select Year</option>
+                    </select>
+                    <button id="submitButton">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="populationData"></div>
+                <div id="holidayData"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to display holiday data and predicted population
+        function showModal(countryName, year) {
+            // Initialize variables to hold holiday data and predicted population
+            let holidayData, populationData;
+
+            // Fetch predicted population for the selected country and year
+            fetch(`/country/${countryName}/population?year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    populationData = data;
+                    // Check if holiday data is already fetched
+                    if (holidayData !== undefined) {
+                        updateModal(countryName, year, populationData, holidayData);
+                    }
+                })
+                .catch(error => console.error('Error fetching predicted population for', countryName, ':', error));
+
+            // Fetch holidays for the selected country and year
+            fetch(`/country/${countryName}/holidays?year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    holidayData = data;
+                    // Check if population data is already fetched
+                    if (populationData !== undefined) {
+                        updateModal(countryName, year, populationData, holidayData);
+                    }
+                })
+                .catch(error => console.error('Error fetching holidays for', countryName, ':', error));
+        }
+
+        // Function to update the modal content with holiday data and predicted population
+        function updateModal(countryName, year, populationData, holidayData) {
+            const populationDiv = document.getElementById('populationData');
+            populationDiv.innerHTML = `<h2>Predicted Population in ${countryName} for ${year}</h2>`;
+            populationDiv.innerHTML += `<p>Predicted Population: ${populationData.population}</p>`;
+
+            const holidayDiv = document.getElementById('holidayData');
+            holidayDiv.innerHTML = `<h2>Holidays in ${countryName} for ${year}</h2>`;
+            // Display holidays in the modal
+            holidayData.forEach(holiday => {
+                const p = document.createElement('p');
+                p.textContent = holiday.name;
+                holidayDiv.appendChild(p);
+            });
+
+            // Show the modal
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Fetch data from the API endpoint
+        fetch('/alldata')
+            .then(response => response.json())
+            .then(data => {
+                // Process and display data
+                const countryDropdown = document.getElementById('countryDropdown');
+                data.country.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.name;
+                    option.textContent = country.name;
+                    countryDropdown.appendChild(option);
+                });
+
+                const yearDropdown = document.getElementById('yearDropdown');
+                for (let year = 2011; year <= 2030; year++) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearDropdown.appendChild(option);
+                }
+
+                document.getElementById('submitButton').addEventListener('click', () => {
+                    const selectedCountry = countryDropdown.value;
+                    const selectedYear = yearDropdown.value;
+                    if (selectedCountry && selectedYear) {
+                        showModal(selectedCountry, selectedYear);
+                    } else {
+                        alert('Please select both country and year.');
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>

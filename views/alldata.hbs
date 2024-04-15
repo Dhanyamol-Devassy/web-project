@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Data</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Define styles for the modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px; /* Place modal content at the center */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 5% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Define styles for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #ddd; /* Add border to the table */
+            table-layout: fixed; /* Fixed layout to ensure equal column width */
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd; /* Add border to the right of cells */
+        }
+
+        th {
+            background-color: darkblue;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tr:last-child td {
+            border-bottom: none; /* Remove bottom border for last row */
+        }
+
+        th:last-child {
+            border-right: none; /* Remove right border for last header cell */
+        }
+
+        td:last-child {
+            border-right: none; /* Remove right border for last data cell */
+        }
+
+        /* Fix table header */
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: white; /* Set background color for the fixed header */
+        }
+    </style>
+</head>
+<body>
+    <h1>Country Data</h1>
+    <table>
+        <thead> <!-- Added thead element for table header -->
+            <tr>
+                <th>Country</th>
+                <th>Capital</th>
+                <th>Unemployment</th>
+                <th>GDP Total</th>
+                <th></th> <!-- Add an empty column for the More button -->
+            </tr>
+        </thead>
+        <tbody> <!-- Added tbody element for table body -->
+            {{#each countries}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.capital}}</td>
+                <td>{{this.unemployment}}</td>
+                <td>{{this.gdpTotal}}</td>
+                <td><button class="more-btn" data-country="{{this.name}}">More</button></td> <!-- More button -->
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-details"></p>
+            <button class="close-modal-btn">Close</button> <!-- Close button for the modal -->
+        </div>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        var moreBtns = document.querySelectorAll(".more-btn");
+        moreBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                var countryName = this.getAttribute("data-country");
+                var countryDetails = getCountryDetails(countryName);
+                showModal(countryName, countryDetails);
+            });
+        });
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Close modal button event
+        var closeModalBtn = document.querySelector(".close-modal-btn");
+        closeModalBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        // Function to fetch country details from the JSON data
+        function getCountryDetails(countryName) {
+            // You can fetch the country details from your JSON data here
+            // For demonstration, I'm returning a sample object
+            return {
+                "infant_mortality": "13.19",
+                "gdp_agri": "19.5",
+                "gdp_ind": "12",
+                "gdp_serv": "68.5",
+                "inflation": "1.7",
+                "government": "parliamentary democracy"
+            };
+        }
+
+        // Function to display the modal with country details
+        function showModal(countryName, countryDetails) {
+            var modalTitle = document.getElementById("modal-title");
+            modalTitle.innerText = "Details for " + countryName;
+
+            var modalDetails = document.getElementById("modal-details");
+            modalDetails.innerHTML = "<b>Infant Mortality:</b> " + countryDetails.infant_mortality + "<br>" +
+                                     "<b>GDP Agriculture:</b> " + countryDetails.gdp_agri + "<br>" +
+                                     "<b>GDP Industry:</b> " + countryDetails.gdp_ind + "<br>" +
+                                     "<b>GDP Services:</b> " + countryDetails.gdp_serv + "<br>" +
+                                     "<b>Inflation:</b> " + countryDetails.inflation + "<br>" +
+                                     "<b>Government:</b> " + countryDetails.government;
+
+            modal.style.display = "block";
+        }
+    </script>
+</body>
+</html>
